@@ -1,24 +1,94 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--MapVC-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="MapVC" customModule="pixel_city" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" zoomEnabled="NO" rotateEnabled="NO" pitchEnabled="NO" showsUserLocation="YES" showsCompass="NO" translatesAutoresizingMaskIntoConstraints="NO" id="47m-wS-5zZ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </mapView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cvc-2Z-5zQ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="75"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Double-tap to drop a pin and view photos!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xEi-Va-pMc">
+                                        <rect key="frame" x="8" y="12.5" width="359" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="Ecn-vm-aTX"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" red="0.96470588235294119" green="0.65098039215686276" blue="0.13725490196078433" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="75" id="7lq-PH-hkE"/>
+                                    <constraint firstItem="xEi-Va-pMc" firstAttribute="centerY" secondItem="cvc-2Z-5zQ" secondAttribute="centerY" id="Jwk-RR-R2k"/>
+                                    <constraint firstAttribute="trailing" secondItem="xEi-Va-pMc" secondAttribute="trailing" constant="8" id="QWc-ES-jcg"/>
+                                    <constraint firstItem="xEi-Va-pMc" firstAttribute="leading" secondItem="cvc-2Z-5zQ" secondAttribute="leading" constant="8" id="RVs-vI-djy"/>
+                                    <constraint firstItem="xEi-Va-pMc" firstAttribute="centerX" secondItem="cvc-2Z-5zQ" secondAttribute="centerX" id="Ru0-sf-cbe"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ld3-iX-Ihs">
+                                <rect key="frame" x="309" y="601" width="50" height="50"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="X7E-51-Nld"/>
+                                    <constraint firstAttribute="width" constant="50" id="YnE-UW-X0n"/>
+                                </constraints>
+                                <state key="normal" image="locationButton"/>
+                                <connections>
+                                    <action selector="centerUserLocationButtonWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="JUu-Fz-7Uw"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ucP-qQ-I5D">
+                                <rect key="frame" x="0.0" y="667" width="375" height="1"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="IXN-ce-cxR"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="cvc-2Z-5zQ" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="2KV-UZ-2lJ"/>
+                            <constraint firstItem="47m-wS-5zZ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="36X-E8-7x3"/>
+                            <constraint firstItem="ucP-qQ-I5D" firstAttribute="top" secondItem="47m-wS-5zZ" secondAttribute="bottom" id="3wM-S9-Nh6"/>
+                            <constraint firstItem="cvc-2Z-5zQ" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="6TT-VL-YGF"/>
+                            <constraint firstItem="cvc-2Z-5zQ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="6ql-Fo-OhU"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="47m-wS-5zZ" secondAttribute="trailing" id="9Sf-7H-5qh"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="ld3-iX-Ihs" secondAttribute="trailing" constant="16" id="NJk-iQ-rH2"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="47m-wS-5zZ" secondAttribute="bottom" id="SMl-xM-qQh"/>
+                            <constraint firstItem="47m-wS-5zZ" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ZMS-8u-CLl"/>
+                            <constraint firstItem="ucP-qQ-I5D" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="dlh-Kp-y05"/>
+                            <constraint firstAttribute="trailing" secondItem="ucP-qQ-I5D" secondAttribute="trailing" id="jAj-za-jFk"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="ld3-iX-Ihs" secondAttribute="bottom" constant="16" id="zTj-LN-sZD"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="mapView" destination="47m-wS-5zZ" id="6Gg-Zr-8v7"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="133.59999999999999" y="125.4872563718141"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="locationButton" width="67" height="67"/>
+    </resources>
 </document>
