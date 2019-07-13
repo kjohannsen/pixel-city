@@ -13,14 +13,22 @@ import CoreLocation
 class MapVC: UIViewController, UIGestureRecognizerDelegate {
     
     // MARK: Variables
+    
     var locationManager = CLLocationManager()
     let authorizationStatus = CLLocationManager.authorizationStatus()
     let regionRadius: Double = 1000 //meters
+    var screenSize = UIScreen.main.bounds //this is a rectangle
 
     // MARK: Outlets
+    
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var pullUpView: UIView!
     @IBOutlet weak var pullUpViewHeightConstraint: NSLayoutConstraint!
+    
+    var spinner: UIActivityIndicatorView?
+    var progressLabel: UILabel?
+    
+    // MARK: Methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,8 +68,40 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
             self.view.layoutIfNeeded()
         }
     }
+    
+    func addSpinner() {
+        spinner = UIActivityIndicatorView()
+        spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: (pullUpView.frame.height / 2) - ((spinner?.frame.height)! / 2))
+        spinner?.style = .whiteLarge
+        spinner?.color = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        spinner?.startAnimating()
+        pullUpView.addSubview(spinner!)
+    }
+    
+    func removeSpinner() {
+        if spinner != nil {
+            spinner?.removeFromSuperview()
+        }
+    }
+    
+    func addProgressLabel() {
+        progressLabel = UILabel()
+        progressLabel?.frame = CGRect(x: (screenSize.width / 2) - 120, y: 175, width: 240, height: 40)
+        progressLabel?.font = UIFont(name: "Avenir Next", size: 18)
+        progressLabel?.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        progressLabel?.textAlignment = .center
+        progressLabel?.text = "12/40 PHOTOS LOADED"
+        pullUpView.addSubview(progressLabel!)
+    }
+    
+    func removeProgressLabel() {
+        if progressLabel != nil {
+            progressLabel?.removeFromSuperview()
+        }
+    }
 
     // MARK: Actions
+    
     @IBAction func centerUserLocationButtonWasPressed(_ sender: Any) {
         if authorizationStatus == .authorizedAlways || authorizationStatus == .authorizedWhenInUse {
             centerMapOnUserLocation()
@@ -91,9 +131,16 @@ extension MapVC: MKMapViewDelegate {
     }
     
     @objc func dropPin(sender: UITapGestureRecognizer) {
+        //clear the view for new content
         removePin()
+        removeSpinner()
+        removeProgressLabel()
+        
+        //build the new view
         animateViewUp()
         addSwipe()
+        addSpinner()
+        addProgressLabel()
         
         let touchPoint = sender.location(in: mapView)
         let touchCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
