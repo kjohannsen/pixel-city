@@ -9,6 +9,8 @@
 import UIKit
 import MapKit
 import CoreLocation
+import Alamofire
+import AlamofireImage
 
 class MapVC: UIViewController, UIGestureRecognizerDelegate {
     
@@ -30,6 +32,11 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     
     var flowLayout = UICollectionViewFlowLayout() //this is needed when creating a collection view programmatically
     var collectionView: UICollectionView?
+
+    let numberOfCellsPerRow: CGFloat = 4
+    
+    var imageUrlArray = [String]()
+    var imageArray = [UIImage]()
     
     // MARK: Methods
     
@@ -42,11 +49,13 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         
         addDoubleTapToView()
         
+        setUpFlowLayout()
+        
         collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: flowLayout)
         collectionView?.register(PhotoCell.self, forCellWithReuseIdentifier: "photoCell")
         collectionView?.dataSource = self
         collectionView?.delegate = self
-        collectionView?.backgroundColor = #colorLiteral(red: 0.2745098174, green: 0.4862745106, blue: 0.1411764771, alpha: 1)
+        collectionView?.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         pullUpView.addSubview(collectionView!)
     }
     
@@ -72,6 +81,7 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     }
     
     @objc func animateViewDown() {
+        cancelAllSessions()
         pullUpViewHeightConstraint.constant = 0
         UIView.animate(withDuration: 0.3) {
             self.view.layoutIfNeeded()
@@ -99,7 +109,6 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         progressLabel?.font = UIFont(name: "Avenir Next", size: 18)
         progressLabel?.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
         progressLabel?.textAlignment = .center
-        progressLabel?.text = "12/40 PHOTOS LOADED"
         collectionView?.addSubview(progressLabel!)
     }
     
@@ -144,6 +153,11 @@ extension MapVC: MKMapViewDelegate {
         removePin()
         removeSpinner()
         removeProgressLabel()
+        cancelAllSessions()
+        
+        imageArray = []
+        imageUrlArray = []
+        collectionView?.reloadData()
         
         //build the new view
         animateViewUp()
@@ -158,11 +172,56 @@ extension MapVC: MKMapViewDelegate {
         
         let coordinateRegion = MKCoordinateRegion(center: touchCoordinate, latitudinalMeters: regionRadius * 2.0, longitudinalMeters: regionRadius * 2.0)
         mapView.setRegion(coordinateRegion, animated: true)
+        
+        getImageUrls(forAnnotation: annotation) { (finished) in
+            if finished {
+                self.getImages(handler: { (finished) in
+                    if finished {
+                        self.removeSpinner()
+                        self.removeProgressLabel()
+                        self.collectionView?.reloadData()
+                    }
+                })
+            }
+        }
     }
     
     func removePin() {
         for annotation in mapView.annotations {
             mapView.removeAnnotation(annotation)
+        }
+    }
+    
+    func getImageUrls(forAnnotation annotation: DroppablePin, handler: @escaping (_ status: Bool) -> ()) {
+        Alamofire.request(yelpSearchUrl(forAnnotation: annotation, withSearchRadius: 1000, andResultsLimit: 40), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: BEARER_HEADER).responseJSON { (response) in
+            guard let json = response.result.value as? Dictionary<String, AnyObject> else { return }
+            let businessesDictArray = json["businesses"] as! [Dictionary<String, AnyObject>]
+            for business in businessesDictArray {
+                let imageUrl = "\(business["image_url"]!)"
+                self.imageUrlArray.append(imageUrl)
+            }
+            handler(true)
+        }
+    }
+    
+    func getImages(handler: @escaping (_ status: Bool) -> ()) {
+        for url in imageUrlArray {
+            Alamofire.request(url).responseImage { (response) in
+                guard let image = response.result.value else { return }
+                self.imageArray.append(image)
+                self.progressLabel?.text = "\(self.imageArray.count)/40 PHOTOS LOADED"
+                
+                if self.imageArray.count == self.imageUrlArray.count {
+                    handler(true)
+                }
+            }
+        }
+    }
+    
+    func cancelAllSessions() {
+        Alamofire.SessionManager.default.session.getTasksWithCompletionHandler { (sessionDataTask, uploadData, downloadData) in
+            sessionDataTask.forEach({ $0.cancel() })
+            downloadData.forEach({ $0.cancel() })
         }
     }
 }
@@ -187,14 +246,24 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        // this will come from the datasource later
-        return 4
+        return imageArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as? PhotoCell else { return UICollectionViewCell() }
-        //configure the cell here
+        let imageFromIndex = imageArray[indexPath.row]
+        let cellImageView = UIImageView(image: imageFromIndex)
+        cellImageView.frame = cell.bounds
+        cellImageView.clipsToBounds = true
+        cellImageView.contentMode = .scaleAspectFill
+        cell.addSubview(cellImageView)
         
         return cell
+    }
+    
+    func setUpFlowLayout() {
+        let horizontalSpacing = flowLayout.scrollDirection == .vertical ? flowLayout.minimumInteritemSpacing : flowLayout.minimumLineSpacing
+        let cellWidth = (view.frame.width - max(0, numberOfCellsPerRow - 1)*horizontalSpacing)/numberOfCellsPerRow
+        flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
     }
 }
