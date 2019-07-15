@@ -30,6 +30,8 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     var spinner: UIActivityIndicatorView?
     var progressLabel: UILabel?
     
+    var swipeDownMarkView: UIView?
+    
     var flowLayout = UICollectionViewFlowLayout() //this is needed when creating a collection view programmatically
     var collectionView: UICollectionView?
 
@@ -49,14 +51,24 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         
         addDoubleTapToView()
         
+        setUpPullUpView()
+        addSwipeDownMarkerView()
         setUpFlowLayout()
-        
-        collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: flowLayout)
-        collectionView?.register(PhotoCell.self, forCellWithReuseIdentifier: "photoCell")
-        collectionView?.dataSource = self
-        collectionView?.delegate = self
-        collectionView?.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        pullUpView.addSubview(collectionView!)
+        setUpCollectionView()
+    }
+    
+    func addSwipeDownMarkerView() {
+        swipeDownMarkView = UIView(frame: CGRect(x: (pullUpView.frame.width / 2 - 20), y: 7, width: 40, height: 6))
+        swipeDownMarkView?.backgroundColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        swipeDownMarkView?.layer.cornerRadius = 5.0
+        pullUpView.addSubview(swipeDownMarkView!)
+    }
+    
+    func setUpPullUpView() {
+        pullUpView.layer.cornerRadius = 5.0
+        pullUpView.layer.shadowColor = #colorLiteral(red: 0.6000000238, green: 0.6000000238, blue: 0.6000000238, alpha: 1)
+        pullUpView.layer.shadowOpacity = 1
+        pullUpView.layer.shadowOffset = .zero
     }
     
     func addDoubleTapToView() {
@@ -262,8 +274,19 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
     }
     
     func setUpFlowLayout() {
+        flowLayout.minimumInteritemSpacing = 3.0
+        flowLayout.minimumLineSpacing = 3.0
         let horizontalSpacing = flowLayout.scrollDirection == .vertical ? flowLayout.minimumInteritemSpacing : flowLayout.minimumLineSpacing
         let cellWidth = (view.frame.width - max(0, numberOfCellsPerRow - 1)*horizontalSpacing)/numberOfCellsPerRow
         flowLayout.itemSize = CGSize(width: cellWidth, height: cellWidth)
+    }
+    
+    func setUpCollectionView() {
+        collectionView = UICollectionView(frame: CGRect(x: 0, y: 20, width: view.frame.width, height: view.frame.height - 20), collectionViewLayout: flowLayout) //adds a top inset for swiping down
+        collectionView?.register(PhotoCell.self, forCellWithReuseIdentifier: "photoCell")
+        collectionView?.dataSource = self
+        collectionView?.delegate = self
+        collectionView?.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        pullUpView.addSubview(collectionView!)
     }
 }
