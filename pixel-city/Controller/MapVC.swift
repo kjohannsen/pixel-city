@@ -11,6 +11,7 @@ import MapKit
 import CoreLocation
 import Alamofire
 import AlamofireImage
+import SkeletonView
 
 class MapVC: UIViewController, UIGestureRecognizerDelegate {
     
@@ -100,35 +101,35 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-    func addSpinner() {
-        spinner = UIActivityIndicatorView()
-        spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: (pullUpView.frame.height / 2) - ((spinner?.frame.height)! / 2))
-        spinner?.style = .whiteLarge
-        spinner?.color = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-        spinner?.startAnimating()
-        collectionView?.addSubview(spinner!)
-    }
+//    func addSpinner() {
+//        spinner = UIActivityIndicatorView()
+//        spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: (pullUpView.frame.height / 2) - ((spinner?.frame.height)! / 2))
+//        spinner?.style = .whiteLarge
+//        spinner?.color = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+//        spinner?.startAnimating()
+//        collectionView?.addSubview(spinner!)
+//    }
     
-    func removeSpinner() {
-        if spinner != nil {
-            spinner?.removeFromSuperview()
-        }
-    }
+//    func removeSpinner() {
+//        if spinner != nil {
+//            spinner?.removeFromSuperview()
+//        }
+//    }
     
-    func addProgressLabel() {
-        progressLabel = UILabel()
-        progressLabel?.frame = CGRect(x: (screenSize.width / 2) - 120, y: 175, width: 240, height: 40)
-        progressLabel?.font = UIFont(name: "Avenir Next", size: 18)
-        progressLabel?.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-        progressLabel?.textAlignment = .center
-        collectionView?.addSubview(progressLabel!)
-    }
+//    func addProgressLabel() {
+//        progressLabel = UILabel()
+//        progressLabel?.frame = CGRect(x: (screenSize.width / 2) - 120, y: 175, width: 240, height: 40)
+//        progressLabel?.font = UIFont(name: "Avenir Next", size: 18)
+//        progressLabel?.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+//        progressLabel?.textAlignment = .center
+//        collectionView?.addSubview(progressLabel!)
+//    }
     
-    func removeProgressLabel() {
-        if progressLabel != nil {
-            progressLabel?.removeFromSuperview()
-        }
-    }
+//    func removeProgressLabel() {
+//        if progressLabel != nil {
+//            progressLabel?.removeFromSuperview()
+//        }
+//    }
 
     // MARK: Actions
     
@@ -163,8 +164,8 @@ extension MapVC: MKMapViewDelegate {
     @objc func dropPin(sender: UITapGestureRecognizer) {
         //clear the view for new content
         removePin()
-        removeSpinner()
-        removeProgressLabel()
+        collectionView?.hideSkeleton()
+        collectionView?.stopSkeletonAnimation()
         cancelAllSessions()
         
         imageArray = []
@@ -174,8 +175,9 @@ extension MapVC: MKMapViewDelegate {
         //build the new view
         animateViewUp()
         addSwipe()
-        addSpinner()
-        addProgressLabel()
+        collectionView?.prepareSkeleton(completion: { (done) in
+            self.collectionView?.showAnimatedSkeleton()
+        })
         
         let touchPoint = sender.location(in: mapView)
         let touchCoordinate = mapView.convert(touchPoint, toCoordinateFrom: mapView)
@@ -189,8 +191,8 @@ extension MapVC: MKMapViewDelegate {
             if finished {
                 self.getImages(handler: { (finished) in
                     if finished {
-                        self.removeSpinner()
-                        self.removeProgressLabel()
+                        self.collectionView?.hideSkeleton()
+                        self.collectionView?.stopSkeletonAnimation()
                         self.collectionView?.reloadData()
                     }
                 })
@@ -252,13 +254,21 @@ extension MapVC: CLLocationManagerDelegate {
     }
 }
 
-extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension MapVC: SkeletonCollectionViewDelegate, SkeletonCollectionViewDataSource {
+    func collectionSkeletonView(_ skeletonView: UICollectionView, cellIdentifierForItemAt indexPath: IndexPath) -> ReusableCellIdentifier {
+        return "photoCell"
+    }
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return imageArray.count
+    }
+    
+    func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 12
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -268,6 +278,7 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
         cellImageView.frame = cell.bounds
         cellImageView.clipsToBounds = true
         cellImageView.contentMode = .scaleAspectFill
+        cellImageView.isSkeletonable = true
         cell.addSubview(cellImageView)
         
         return cell
@@ -293,6 +304,7 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
         collectionView?.dataSource = self
         collectionView?.delegate = self
         collectionView?.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        collectionView?.isSkeletonable = true
         pullUpView.addSubview(collectionView!)
     }
 }

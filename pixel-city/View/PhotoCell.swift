@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import SkeletonView
 
 class PhotoCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
+        
+        isSkeletonable = true
     }
     
     required init?(coder aDecoder: NSCoder) {

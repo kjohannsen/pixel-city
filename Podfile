@@ -8,5 +8,6 @@ target 'pixel-city' do
   # Pods for pixel-city
 pod 'Alamofire', '~> 4.8'
 pod 'AlamofireImage', '~> 3.5'
+pod 'SkeletonView'
 
 end
