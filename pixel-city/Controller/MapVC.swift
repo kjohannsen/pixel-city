@@ -273,6 +273,12 @@ extension MapVC: UICollectionViewDelegate, UICollectionViewDataSource {
         return cell
     }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard let popUpVC = storyboard?.instantiateViewController(withIdentifier: "PopUpVC") as? PopUpVC else { return }
+        popUpVC.initPassedData(forImage: imageArray[indexPath.row])
+        present(popUpVC, animated: true, completion: nil)
+    }
+    
     func setUpFlowLayout() {
         flowLayout.minimumInteritemSpacing = 3.0
         flowLayout.minimumLineSpacing = 3.0

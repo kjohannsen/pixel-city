@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		5C35512522D95CBF00C7B4E4 /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C35512422D95CBF00C7B4E4 /* PhotoCell.swift */; };
+		5C4CFEE022DBFBD000491124 /* PopUpVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C4CFEDF22DBFBD000491124 /* PopUpVC.swift */; };
 		5C5DADF922D69FD600DFBAA6 /* DroppablePin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C5DADF822D69FD600DFBAA6 /* DroppablePin.swift */; };
 		5C95C60E22D9EFB800569827 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C95C60D22D9EFB800569827 /* Constants.swift */; };
 		5CDB5EE322D54EE7005F41A4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5CDB5EE222D54EE7005F41A4 /* AppDelegate.swift */; };
@@ -20,6 +21,7 @@
 
 /* Begin PBXFileReference section */
 		5C35512422D95CBF00C7B4E4 /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		5C4CFEDF22DBFBD000491124 /* PopUpVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpVC.swift; sourceTree = "<group>"; };
 		5C5DADF822D69FD600DFBAA6 /* DroppablePin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroppablePin.swift; sourceTree = "<group>"; };
 		5C95C60D22D9EFB800569827 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5CDB5EDF22D54EE7005F41A4 /* pixel-city.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "pixel-city.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -125,6 +127,7 @@
 			isa = PBXGroup;
 			children = (
 				5CDB5EE422D54EE7005F41A4 /* MapVC.swift */,
+				5C4CFEDF22DBFBD000491124 /* PopUpVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -247,6 +250,7 @@
 				5C95C60E22D9EFB800569827 /* Constants.swift in Sources */,
 				5C35512522D95CBF00C7B4E4 /* PhotoCell.swift in Sources */,
 				5CDB5EE522D54EE7005F41A4 /* MapVC.swift in Sources */,
+				5C4CFEE022DBFBD000491124 /* PopUpVC.swift in Sources */,
 				5C5DADF922D69FD600DFBAA6 /* DroppablePin.swift in Sources */,
 				5CDB5EE322D54EE7005F41A4 /* AppDelegate.swift in Sources */,
 			);

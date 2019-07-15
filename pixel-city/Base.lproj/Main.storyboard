@@ -89,8 +89,52 @@
             </objects>
             <point key="canvasLocation" x="133.59999999999999" y="125.4872563718141"/>
         </scene>
+        <!--Pop UpVC-->
+        <scene sceneID="SVD-2R-bCW">
+            <objects>
+                <viewController storyboardIdentifier="PopUpVC" id="lf2-GO-TGP" customClass="PopUpVC" customModule="pixel_city" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="As0-si-MF3">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="mOn-ep-vgU">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aT1-Zk-LWF">
+                                <rect key="frame" x="315" y="40" width="40" height="40"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="5ze-u1-cnO"/>
+                                    <constraint firstAttribute="width" constant="40" id="UFd-Gc-ar0"/>
+                                </constraints>
+                                <state key="normal" image="closeButton"/>
+                                <connections>
+                                    <action selector="closeButtonPressed:" destination="lf2-GO-TGP" eventType="touchUpInside" id="ZVU-ZY-FFl"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="b1K-BM-ioc" firstAttribute="trailing" secondItem="aT1-Zk-LWF" secondAttribute="trailing" constant="20" id="6Rq-hL-4NN"/>
+                            <constraint firstItem="mOn-ep-vgU" firstAttribute="trailing" secondItem="b1K-BM-ioc" secondAttribute="trailing" id="8gB-JW-8lh"/>
+                            <constraint firstItem="mOn-ep-vgU" firstAttribute="top" secondItem="As0-si-MF3" secondAttribute="top" id="FJx-t8-Y9w"/>
+                            <constraint firstItem="mOn-ep-vgU" firstAttribute="leading" secondItem="b1K-BM-ioc" secondAttribute="leading" id="XjI-pB-cH1"/>
+                            <constraint firstItem="aT1-Zk-LWF" firstAttribute="top" secondItem="b1K-BM-ioc" secondAttribute="top" constant="20" id="t0J-Ph-4aJ"/>
+                            <constraint firstItem="mOn-ep-vgU" firstAttribute="bottom" secondItem="b1K-BM-ioc" secondAttribute="bottom" id="tF1-gP-Ewl"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="b1K-BM-ioc"/>
+                    </view>
+                    <connections>
+                        <outlet property="popUpImageView" destination="mOn-ep-vgU" id="yJx-cv-Eya"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ZUo-If-bz0" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="872.79999999999995" y="124.58770614692655"/>
+        </scene>
     </scenes>
     <resources>
+        <image name="closeButton" width="30" height="30"/>
         <image name="locationButton" width="67" height="67"/>
     </resources>
 </document>
