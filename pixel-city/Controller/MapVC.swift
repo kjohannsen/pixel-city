@@ -284,10 +284,16 @@ extension MapVC: SkeletonCollectionViewDelegate, SkeletonCollectionViewDataSourc
         return cell
     }
     
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        guard let popUpVC = storyboard?.instantiateViewController(withIdentifier: "PopUpVC") as? PopUpVC else { return }
+//        popUpVC.initPassedData(forImage: imageArray[indexPath.row])
+//        present(popUpVC, animated: true, completion: nil)
+//    }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let popUpVC = storyboard?.instantiateViewController(withIdentifier: "PopUpVC") as? PopUpVC else { return }
-        popUpVC.initPassedData(forImage: imageArray[indexPath.row])
-        present(popUpVC, animated: true, completion: nil)
+        guard let swipePopUpVC = storyboard?.instantiateViewController(withIdentifier: "SwipePopUpVC") as? SwipePopUpVC else { return }
+        swipePopUpVC.initPassedData(forImages: imageArray, andSelectedImage: indexPath.row)
+        present(swipePopUpVC, animated: true, completion: nil)
     }
     
     func setUpFlowLayout() {
