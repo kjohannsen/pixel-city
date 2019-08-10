@@ -132,6 +132,80 @@
             </objects>
             <point key="canvasLocation" x="872.79999999999995" y="124.58770614692655"/>
         </scene>
+        <!--Swipe DetailVC-->
+        <scene sceneID="m09-9g-WIS">
+            <objects>
+                <viewController storyboardIdentifier="SwipeDetailVC" id="6sr-Tm-5aE" customClass="SwipeDetailVC" customModule="pixel_city" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="jrF-2k-PCp">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" pagingEnabled="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="Qlz-1a-SdW">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="UmE-E1-YZD">
+                                    <size key="itemSize" width="374" height="646"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="SwipePhotoCell" id="nKo-PZ-PTZ" customClass="SwipePhotoCell" customModule="pixel_city" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="0.5" width="374" height="646"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                            <rect key="frame" x="0.0" y="0.0" width="374" height="646"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yG7-PS-Tnh">
+                                                    <rect key="frame" x="0.0" y="28" width="374" height="610"/>
+                                                </imageView>
+                                            </subviews>
+                                        </view>
+                                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="bottomMargin" secondItem="yG7-PS-Tnh" secondAttribute="bottom" id="8v7-XS-7NM"/>
+                                            <constraint firstItem="yG7-PS-Tnh" firstAttribute="top" secondItem="nKo-PZ-PTZ" secondAttribute="topMargin" id="YDJ-U8-jTY"/>
+                                            <constraint firstAttribute="trailing" secondItem="yG7-PS-Tnh" secondAttribute="trailing" id="eof-Iw-CpW"/>
+                                            <constraint firstItem="yG7-PS-Tnh" firstAttribute="leadingMargin" secondItem="nKo-PZ-PTZ" secondAttribute="leadingMargin" id="eqe-y6-S7S"/>
+                                        </constraints>
+                                        <connections>
+                                            <outlet property="imageView" destination="yG7-PS-Tnh" id="3KS-MO-M8Z"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bp5-J1-a6n">
+                                <rect key="frame" x="329" y="36" width="30" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="g0H-na-jtA"/>
+                                    <constraint firstAttribute="width" constant="30" id="myd-bq-CVh"/>
+                                </constraints>
+                                <state key="normal" image="closeButton"/>
+                                <connections>
+                                    <action selector="closeButtonPressed:" destination="6sr-Tm-5aE" eventType="touchUpInside" id="07I-wg-aTh"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Qlz-1a-SdW" firstAttribute="leading" secondItem="4y3-Dh-JrT" secondAttribute="leading" id="2jG-3J-y1c"/>
+                            <constraint firstItem="bp5-J1-a6n" firstAttribute="top" secondItem="4y3-Dh-JrT" secondAttribute="top" constant="16" id="HBA-Pd-2v0"/>
+                            <constraint firstItem="Qlz-1a-SdW" firstAttribute="top" secondItem="4y3-Dh-JrT" secondAttribute="top" id="WVQ-jT-4OC"/>
+                            <constraint firstItem="4y3-Dh-JrT" firstAttribute="trailing" secondItem="bp5-J1-a6n" secondAttribute="trailing" constant="16" id="qRS-gk-V7O"/>
+                            <constraint firstItem="4y3-Dh-JrT" firstAttribute="trailing" secondItem="Qlz-1a-SdW" secondAttribute="trailing" id="xdj-7z-ORS"/>
+                            <constraint firstItem="4y3-Dh-JrT" firstAttribute="bottom" secondItem="Qlz-1a-SdW" secondAttribute="bottom" id="yFa-nj-0Z2"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="4y3-Dh-JrT"/>
+                    </view>
+                    <connections>
+                        <outlet property="swipeCollectionView" destination="Qlz-1a-SdW" id="gVh-rO-vB7"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sSq-yw-dw7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1573.5999999999999" y="125.4872563718141"/>
+        </scene>
     </scenes>
     <resources>
         <image name="closeButton" width="30" height="30"/>

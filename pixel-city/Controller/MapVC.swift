@@ -284,11 +284,19 @@ extension MapVC: SkeletonCollectionViewDelegate, SkeletonCollectionViewDataSourc
         return cell
     }
     
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        guard let popUpVC = storyboard?.instantiateViewController(withIdentifier: "PopUpVC") as? PopUpVC else { return }
+//        popUpVC.initPassedData(forImage: imageArray[indexPath.row])
+//        present(popUpVC, animated: true, completion: nil)
+//    }
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let popUpVC = storyboard?.instantiateViewController(withIdentifier: "PopUpVC") as? PopUpVC else { return }
-        popUpVC.initPassedData(forImage: imageArray[indexPath.row])
-        present(popUpVC, animated: true, completion: nil)
+        guard let swipeDetailVC = storyboard?.instantiateViewController(withIdentifier: "SwipeDetailVC") as? SwipeDetailVC else { return }
+        swipeDetailVC.imageArray = self.imageArray
+        swipeDetailVC.selectedIndex = indexPath
+        present(swipeDetailVC, animated: true, completion: nil)
     }
+
     
     func setUpFlowLayout() {
         flowLayout.minimumInteritemSpacing = 3.0
