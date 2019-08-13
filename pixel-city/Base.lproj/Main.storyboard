@@ -163,21 +163,29 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LXd-NF-0Og">
                                                     <rect key="frame" x="0.0" y="0.0" width="313" height="60"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Restaurant Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ItJ-QE-stm">
-                                                            <rect key="frame" x="8" y="20" width="136" height="24"/>
-                                                            <constraints>
-                                                                <constraint firstAttribute="height" constant="24" id="hAi-CS-bwE"/>
-                                                            </constraints>
-                                                            <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
-                                                            <color key="textColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                            <nil key="highlightedColor"/>
-                                                        </label>
+                                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="EV2-5e-7Xs">
+                                                            <rect key="frame" x="8" y="8.5" width="136" height="43"/>
+                                                            <subviews>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Restaurant Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ItJ-QE-stm">
+                                                                    <rect key="frame" x="0.0" y="0.0" width="136" height="23.5"/>
+                                                                    <fontDescription key="fontDescription" name="AvenirNext-DemiBold" family="Avenir Next" pointSize="17"/>
+                                                                    <color key="textColor" red="0.93725490570000003" green="0.93725490570000003" blue="0.95686274770000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Categories" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IZv-Rm-WCU">
+                                                                    <rect key="frame" x="0.0" y="23.5" width="70" height="19.5"/>
+                                                                    <fontDescription key="fontDescription" name="AvenirNext-Regular" family="Avenir Next" pointSize="14"/>
+                                                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    <nil key="highlightedColor"/>
+                                                                </label>
+                                                            </subviews>
+                                                        </stackView>
                                                     </subviews>
                                                     <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
-                                                        <constraint firstItem="ItJ-QE-stm" firstAttribute="top" secondItem="LXd-NF-0Og" secondAttribute="top" constant="20" id="6L2-io-If8"/>
                                                         <constraint firstAttribute="height" constant="60" id="aGY-iM-pbR"/>
-                                                        <constraint firstItem="ItJ-QE-stm" firstAttribute="leading" secondItem="LXd-NF-0Og" secondAttribute="leading" constant="8" id="gDc-sA-Qk1"/>
+                                                        <constraint firstItem="EV2-5e-7Xs" firstAttribute="leading" secondItem="LXd-NF-0Og" secondAttribute="leading" constant="8" id="hrO-Qb-Ur5"/>
+                                                        <constraint firstItem="EV2-5e-7Xs" firstAttribute="centerY" secondItem="LXd-NF-0Og" secondAttribute="centerY" id="u1l-cq-5UG"/>
                                                     </constraints>
                                                 </view>
                                             </subviews>
@@ -193,6 +201,7 @@
                                             <constraint firstItem="LXd-NF-0Og" firstAttribute="leading" secondItem="nKo-PZ-PTZ" secondAttribute="leading" id="x2r-bP-VHT"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="categoryLabel" destination="IZv-Rm-WCU" id="YwA-zg-MTb"/>
                                             <outlet property="imageView" destination="yG7-PS-Tnh" id="3KS-MO-M8Z"/>
                                             <outlet property="nameLabel" destination="ItJ-QE-stm" id="hjd-VO-gg9"/>
                                         </connections>

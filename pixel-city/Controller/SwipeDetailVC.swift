@@ -41,6 +41,7 @@ class SwipeDetailVC: UIViewController, UICollectionViewDelegate, UICollectionVie
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SwipePhotoCell", for: indexPath) as? SwipePhotoCell else { return UICollectionViewCell() }
         cell.imageView.image = businessArray[indexPath.row].image
         cell.nameLabel.text = businessArray[indexPath.row].name
+        cell.categoryLabel.text = businessArray[indexPath.row].categories.joined(separator: ", ")
         return cell
     }
     

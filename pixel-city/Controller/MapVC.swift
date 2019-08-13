@@ -191,7 +191,13 @@ extension MapVC: MKMapViewDelegate {
             for business in businessesDictArray {
                 let businessName = "\(business["name"]!)"
                 let imageUrl = "\(business["image_url"]!)"
-                let newBusiness = Business(name: businessName, imageUrl: imageUrl, image: nil)
+                let categoryDictArray = business["categories"] as! [Dictionary<String, AnyObject>]
+                var categoryStringArray = [String]()
+                for category in categoryDictArray {
+                    let categoryTitle = "\(category["title"]!)"
+                    categoryStringArray.append(categoryTitle)
+                }
+                let newBusiness = Business(name: businessName, categories: categoryStringArray, imageUrl: imageUrl, image: nil)
                 self.businessNameArray.append(businessName)
                 self.imageUrlArray.append(imageUrl)
                 self.businessArray.append(newBusiness)
@@ -204,7 +210,7 @@ extension MapVC: MKMapViewDelegate {
         for business in businessArray {
             Alamofire.request(business.imageUrl).responseImage { (response) in
                 guard let image = response.result.value else { return }
-                let newBusiness = Business(name: business.name, imageUrl: business.imageUrl, image: image)
+                let newBusiness = Business(name: business.name, categories: business.categories, imageUrl: business.imageUrl, image: image)
                 self.businessWithImageArray.append(newBusiness)
                 
                 if self.businessWithImageArray.count == self.businessArray.count {
