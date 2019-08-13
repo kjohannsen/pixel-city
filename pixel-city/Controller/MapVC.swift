@@ -38,6 +38,8 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
 
     let numberOfCellsPerRow: CGFloat = 4
     
+    var businessNameArray = [String]()
+    //var businessCategoryArray = [String]()
     var imageUrlArray = [String]()
     var imageArray = [UIImage]()
     
@@ -168,6 +170,7 @@ extension MapVC: MKMapViewDelegate {
         collectionView?.stopSkeletonAnimation()
         cancelAllSessions()
         
+        businessNameArray = []
         imageArray = []
         imageUrlArray = []
         collectionView?.reloadData()
@@ -207,25 +210,35 @@ extension MapVC: MKMapViewDelegate {
     }
     
     func getImageUrls(forAnnotation annotation: DroppablePin, handler: @escaping (_ status: Bool) -> ()) {
-        Alamofire.request(yelpSearchUrl(forAnnotation: annotation, withSearchRadius: 1000, andResultsLimit: 40), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: BEARER_HEADER).responseJSON { (response) in
+        Alamofire.request(yelpSearchUrl(forAnnotation: annotation, withSearchRadius: 1000, andResultsLimit: 4), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: BEARER_HEADER).responseJSON { (response) in
             guard let json = response.result.value as? Dictionary<String, AnyObject> else { return }
             let businessesDictArray = json["businesses"] as! [Dictionary<String, AnyObject>]
             for business in businessesDictArray {
+                let businessName = "\(business["name"]!)"
+                //let businessCategory = business[""]
                 let imageUrl = "\(business["image_url"]!)"
+                self.businessNameArray.append(businessName)
                 self.imageUrlArray.append(imageUrl)
             }
+            print(self.businessNameArray)
+            print(self.imageUrlArray)
             handler(true)
         }
     }
     
     func getImages(handler: @escaping (_ status: Bool) -> ()) {
+        print(imageUrlArray)
         for url in imageUrlArray {
+            print(url)
             Alamofire.request(url).responseImage { (response) in
                 guard let image = response.result.value else { return }
+                print(url)
+                print(image)
                 self.imageArray.append(image)
-                self.progressLabel?.text = "\(self.imageArray.count)/40 PHOTOS LOADED"
+                //self.progressLabel?.text = "\(self.imageArray.count)/40 PHOTOS LOADED"
                 
                 if self.imageArray.count == self.imageUrlArray.count {
+                    print(self.imageArray)
                     handler(true)
                 }
             }
@@ -292,6 +305,7 @@ extension MapVC: SkeletonCollectionViewDelegate, SkeletonCollectionViewDataSourc
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let swipeDetailVC = storyboard?.instantiateViewController(withIdentifier: "SwipeDetailVC") as? SwipeDetailVC else { return }
+        swipeDetailVC.nameArray = self.businessNameArray
         swipeDetailVC.imageArray = self.imageArray
         swipeDetailVC.selectedIndex = indexPath
         present(swipeDetailVC, animated: true, completion: nil)
