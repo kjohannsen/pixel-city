@@ -14,6 +14,7 @@ class SwipeDetailVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     
     var nameArray = [String]()
     var imageArray = [UIImage]()
+    var businessArray = [Business]()
     var selectedIndex = IndexPath()
     
     override func viewDidLoad() {
@@ -33,13 +34,13 @@ class SwipeDetailVC: UIViewController, UICollectionViewDelegate, UICollectionVie
     
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageArray.count
+        return businessArray.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SwipePhotoCell", for: indexPath) as? SwipePhotoCell else { return UICollectionViewCell() }
-        cell.imageView.image = imageArray[indexPath.row]
-        cell.nameLabel.text = nameArray[indexPath.row]
+        cell.imageView.image = businessArray[indexPath.row].image
+        cell.nameLabel.text = businessArray[indexPath.row].name
         return cell
     }
     

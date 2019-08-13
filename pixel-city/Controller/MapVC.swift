@@ -39,9 +39,11 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
     let numberOfCellsPerRow: CGFloat = 4
     
     var businessNameArray = [String]()
-    //var businessCategoryArray = [String]()
     var imageUrlArray = [String]()
     var imageArray = [UIImage]()
+    
+    var businessArray = [Business]()
+    var businessWithImageArray = [Business]()
     
     // MARK: Methods
     
@@ -103,36 +105,6 @@ class MapVC: UIViewController, UIGestureRecognizerDelegate {
         }
     }
     
-//    func addSpinner() {
-//        spinner = UIActivityIndicatorView()
-//        spinner?.center = CGPoint(x: (screenSize.width / 2) - ((spinner?.frame.width)! / 2), y: (pullUpView.frame.height / 2) - ((spinner?.frame.height)! / 2))
-//        spinner?.style = .whiteLarge
-//        spinner?.color = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-//        spinner?.startAnimating()
-//        collectionView?.addSubview(spinner!)
-//    }
-    
-//    func removeSpinner() {
-//        if spinner != nil {
-//            spinner?.removeFromSuperview()
-//        }
-//    }
-    
-//    func addProgressLabel() {
-//        progressLabel = UILabel()
-//        progressLabel?.frame = CGRect(x: (screenSize.width / 2) - 120, y: 175, width: 240, height: 40)
-//        progressLabel?.font = UIFont(name: "Avenir Next", size: 18)
-//        progressLabel?.textColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-//        progressLabel?.textAlignment = .center
-//        collectionView?.addSubview(progressLabel!)
-//    }
-    
-//    func removeProgressLabel() {
-//        if progressLabel != nil {
-//            progressLabel?.removeFromSuperview()
-//        }
-//    }
-
     // MARK: Actions
     
     @IBAction func centerUserLocationButtonWasPressed(_ sender: Any) {
@@ -173,6 +145,8 @@ extension MapVC: MKMapViewDelegate {
         businessNameArray = []
         imageArray = []
         imageUrlArray = []
+        businessArray = []
+        businessWithImageArray = []
         collectionView?.reloadData()
         
         //build the new view
@@ -210,35 +184,30 @@ extension MapVC: MKMapViewDelegate {
     }
     
     func getImageUrls(forAnnotation annotation: DroppablePin, handler: @escaping (_ status: Bool) -> ()) {
-        Alamofire.request(yelpSearchUrl(forAnnotation: annotation, withSearchRadius: 1000, andResultsLimit: 4), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: BEARER_HEADER).responseJSON { (response) in
+        Alamofire.request(yelpSearchUrl(forAnnotation: annotation, withSearchRadius: 1000, andResultsLimit: 20), method: .get, parameters: nil, encoding: JSONEncoding.default, headers: BEARER_HEADER).responseJSON { (response) in
             guard let json = response.result.value as? Dictionary<String, AnyObject> else { return }
+            print(json)
             let businessesDictArray = json["businesses"] as! [Dictionary<String, AnyObject>]
             for business in businessesDictArray {
                 let businessName = "\(business["name"]!)"
-                //let businessCategory = business[""]
                 let imageUrl = "\(business["image_url"]!)"
+                let newBusiness = Business(name: businessName, imageUrl: imageUrl, image: nil)
                 self.businessNameArray.append(businessName)
                 self.imageUrlArray.append(imageUrl)
+                self.businessArray.append(newBusiness)
             }
-            print(self.businessNameArray)
-            print(self.imageUrlArray)
             handler(true)
         }
     }
     
     func getImages(handler: @escaping (_ status: Bool) -> ()) {
-        print(imageUrlArray)
-        for url in imageUrlArray {
-            print(url)
-            Alamofire.request(url).responseImage { (response) in
+        for business in businessArray {
+            Alamofire.request(business.imageUrl).responseImage { (response) in
                 guard let image = response.result.value else { return }
-                print(url)
-                print(image)
-                self.imageArray.append(image)
-                //self.progressLabel?.text = "\(self.imageArray.count)/40 PHOTOS LOADED"
+                let newBusiness = Business(name: business.name, imageUrl: business.imageUrl, image: image)
+                self.businessWithImageArray.append(newBusiness)
                 
-                if self.imageArray.count == self.imageUrlArray.count {
-                    print(self.imageArray)
+                if self.businessWithImageArray.count == self.businessArray.count {
                     handler(true)
                 }
             }
@@ -277,7 +246,7 @@ extension MapVC: SkeletonCollectionViewDelegate, SkeletonCollectionViewDataSourc
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return imageArray.count
+        return businessWithImageArray.count
     }
     
     func collectionSkeletonView(_ skeletonView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -286,7 +255,7 @@ extension MapVC: SkeletonCollectionViewDelegate, SkeletonCollectionViewDataSourc
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "photoCell", for: indexPath) as? PhotoCell else { return UICollectionViewCell() }
-        let imageFromIndex = imageArray[indexPath.row]
+        let imageFromIndex = businessWithImageArray[indexPath.row].image
         let cellImageView = UIImageView(image: imageFromIndex)
         cellImageView.frame = cell.bounds
         cellImageView.clipsToBounds = true
@@ -305,8 +274,7 @@ extension MapVC: SkeletonCollectionViewDelegate, SkeletonCollectionViewDataSourc
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let swipeDetailVC = storyboard?.instantiateViewController(withIdentifier: "SwipeDetailVC") as? SwipeDetailVC else { return }
-        swipeDetailVC.nameArray = self.businessNameArray
-        swipeDetailVC.imageArray = self.imageArray
+        swipeDetailVC.businessArray = businessWithImageArray
         swipeDetailVC.selectedIndex = indexPath
         present(swipeDetailVC, animated: true, completion: nil)
     }
